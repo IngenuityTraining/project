@@ -4,6 +4,7 @@
   "dependencies": {
     "@pixi-spine/base": "^3.0.7",
     "@pixi-spine/runtime-4.0": "^3.0.7",
+    "@pixi/filter-blur": "^6.1.1",
     "gsap": "^3.7.1",
     "pixi-spine": "^3.0.7",
     "pixi.js": "^6.0.4"

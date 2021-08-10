@@ -30,3 +30,13 @@ export function getTexture(id:string): Texture<Resource>|null {
   }
   return null;
 }
+
+export function getTextureFrame(textureId: string, frameId: string): Texture<Resource>|null {
+  if (textureId in resources) {
+    const res = resources[textureId];
+    if (res.textures && frameId in res.textures) {
+      return res.textures[frameId] as Texture;
+    }
+  }
+  return null;
+}
