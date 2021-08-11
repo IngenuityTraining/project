@@ -5,6 +5,7 @@ import {
 import { preLoader } from './PreLoader';
 import assets from './assets';
 import { Scene } from './Scene';
+import { getAllTexture } from './Textures';
 
 export class Game {
   private readonly stage: Container;
@@ -24,6 +25,7 @@ export class Game {
       preLoader(assets, () => {
         this.baseScene.init();
         this.isInitialized = true;
+        console.log('All Textures ', getAllTexture());
       });
     }
 

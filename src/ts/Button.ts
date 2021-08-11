@@ -1,30 +1,47 @@
 import { Sprite, Texture } from 'pixi.js';
-import { getTextureFrame } from './Textures';
+import { getTexture } from './Textures';
 
 export class Button extends Sprite {
-  private up: Texture;
+  private readonly up: Texture;
 
-  private down:Texture;
+  private readonly down:Texture;
 
-  private over: Texture;
+  private readonly over: Texture;
 
-  constructor(textureId:string, up:string, over:string, down:string) {
-    super(getTextureFrame(textureId, up)as Texture);
+  private readonly disabled: Texture;
+
+  public set enabled(value:boolean) {
+    this.interactive = value;
+    this.buttonMode = value;
+    this.texture = value ? this.up : this.disabled;
+  }
+
+  constructor(up:string, over:string, down:string, disabled:string) {
+    super(getTexture(up)as Texture);
     this.up = this.texture;
-    this.down = getTextureFrame(textureId, down) as Texture;
-    this.over = getTextureFrame(textureId, over) as Texture;
+    this.down = getTexture(down) as Texture;
+    this.over = getTexture(over) as Texture;
+    this.disabled = getTexture(disabled) as Texture;
 
     this.anchor.set(0.5);
     this.interactive = true;
     this.buttonMode = true;
     this.on('pointerover', () => {
-      this.texture = this.over;
+      if (this.interactive) {
+        this.texture = this.over;
+      } else {
+        this.texture = this.disabled;
+      }
     });
     this.on('pointerdown', () => {
       this.texture = this.down;
     });
     this.on('pointerup', () => {
-      this.texture = this.over;
+      if (this.interactive) {
+        this.texture = this.over;
+      } else {
+        this.texture = this.disabled;
+      }
     });
     this.on('pointerout', () => {
       this.texture = this.up;

@@ -3,15 +3,23 @@ import {
 } from 'pixi.js';
 import { ResourceType } from './PreLoader';
 
+type tTextures = {[key:string]: Texture<Resource> };
+
 let resources: {[key:string]: ILoaderResource };
 
-export function getAllTexture(): {[key:string]: Texture<Resource> } {
+export function getAllTexture(): tTextures {
   const keys = Object.keys(resources);
-  const textures: {[key:string]: Texture<Resource> } = {} as {[key:string]: Texture<Resource> };
+  const textures: tTextures = {} as tTextures;
   keys.forEach((key) => {
-    textures[key] = resources[key].texture as Texture<Resource>;
+    if (resources[key].texture) {
+      textures[key] = resources[key].texture as Texture<Resource>;
+    } else if (resources[key].textures) {
+      const atlasKeys = Object.keys(resources[key].data.frames);
+      atlasKeys.forEach((aKey:string) => {
+        textures[aKey] = (resources[key].textures as tTextures)[aKey] as Texture<Resource>;
+      });
+    }
   });
-
   return textures;
 }
 
@@ -25,8 +33,9 @@ export function getResource(id: string): ILoaderResource {
 }
 
 export function getTexture(id:string): Texture<Resource>|null {
-  if (id in resources) {
-    return resources[id].texture as Texture<Resource>;
+  const textures = getAllTexture();
+  if (id in textures) {
+    return textures[id];
   }
   return null;
 }

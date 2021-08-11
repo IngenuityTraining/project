@@ -2,8 +2,8 @@ import {
   Application, Container, Point, Sprite, Texture,
 } from 'pixi.js';
 import { getTexture } from './Textures';
-import { Reel } from './Reel';
 import { Button } from './Button';
+import { ReelContainer } from './ReelContainer';
 
 export class Scene extends Container {
   public initialized: boolean;
@@ -23,18 +23,21 @@ export class Scene extends Container {
     const logo = this.createSprite('gameLogo', this.center.x, 40);
     logo.scale.set(0.7);
 
-    const spin = new Button('commonUI', 'spin_normal.png', 'spin_over.png', 'spin_down.png');
+    const spin = new Button('spin_normal.png', 'spin_over.png', 'spin_down.png', 'spin_disable.png');
     spin.x = this.center.x;
     spin.y = this.app.view.height - spin.height / 2;
     spin.width = 132;
     spin.height = 132;
     this.addChild(spin);
+    console.log('spin ', spin);
+    const reels = new ReelContainer();
+    reels.init();
+    this.addChild(reels);
+    spin.on('click', () => {
+      reels.spin();
+      spin.enabled = false;
+    });
 
-    for (let i = 0; i < 5; i++) {
-      const reel = new Reel(100 + (i * 217), 75);
-      reel.init(3, 212, 178);
-      this.addChild(reel);
-    }
     this.initialized = true;
   }
 
