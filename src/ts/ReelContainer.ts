@@ -18,6 +18,8 @@ export class ReelContainer extends Container {
       this.addChild(reel);
       this.reels.push(reel);
     }
+    console.log('reels ', this.reels);
+    console.log('reel 1 ', this.reels[0].children[0]);
     const rMask = new Graphics();
     rMask.drawRect(startX, startY, rWidth * numReels, symHeight * reelRows);
     this.addChild(rMask);

@@ -1,12 +1,12 @@
 import { Container } from 'pixi.js';
 import { gsap } from 'gsap';
 import { ReelSymbol } from './ReelSymbol';
-import { SymbolIDs, Reels } from './Symbol.config';
+import { Reels } from './Symbol.config';
 
 export class Reel extends Container {
   private symbolHeight = 0;
 
-  private currentStop = 90;
+  private currentStop = 89;
 
   private symbols: ReelSymbol[] = [];
 
@@ -30,9 +30,9 @@ export class Reel extends Container {
     this.currentStop--;
   }
 
-  private getSymbolID(stop: number): string {
+  private getSymbolID(stop: number): number {
     const reelValue = Reels[this.reelNum][this.currentStop - stop];
-    return SymbolIDs[reelValue];
+    return reelValue;
   }
 
   public spin(): void {
@@ -45,8 +45,8 @@ export class Reel extends Container {
           symbol.blur();
         });
         gsap.to(this, {
-          y: `+=${this.symbolHeight * 2}`,
-          duration: 0.1,
+          y: `+=${this.symbolHeight}`,
+          duration: 1.1,
           repeat: 20,
           onRepeat: () => {
             this.symbols.forEach((symbol: ReelSymbol, i: number) => {

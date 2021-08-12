@@ -1,6 +1,7 @@
 import { Sprite, Texture } from 'pixi.js';
 import { BlurFilter } from '@pixi/filter-blur';
 import { getTexture } from './Textures';
+import { SymbolIDs } from './Symbol.config';
 
 export class ReelSymbol extends Sprite {
   private normalTexture: Texture|undefined;
@@ -9,14 +10,23 @@ export class ReelSymbol extends Sprite {
 
   private isBlurred: boolean;
 
-  public setIconTexture(id: string) {
-    this.normalTexture = getTexture(`${id}.png`) as Texture;
-    this.blurTexture = getTexture(`${id}_blur.png`) as Texture;
+  public symNum: number|undefined;
+
+  public symbolId: string|undefined;
+
+  public setIconTexture(id: number) {
+    this.symNum = id;
+    this.symbolId = SymbolIDs[id];
+    console.log('symbol ', id, this.symNum, this.symbolId);
+    this.normalTexture = getTexture(`${this.symbolId}.png`) as Texture;
+    this.blurTexture = getTexture(`${this.symbolId}_blur.png`) as Texture;
     this.texture = this.isBlurred ? this.blurTexture : this.normalTexture;
   }
 
-  constructor(symId: string) {
+  constructor(symId: number) {
     super();
+    this.symNum = symId;
+    this.symbolId = SymbolIDs[symId];
     this.setIconTexture(symId);
     this.anchor.set(0.5);
     this.isBlurred = false;
